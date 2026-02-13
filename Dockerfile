@@ -12,4 +12,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Install Playwright Chromium + system dependencies
+RUN npx playwright install --with-deps chromium
+
 USER node
