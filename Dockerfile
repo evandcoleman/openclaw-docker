@@ -13,6 +13,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Playwright Chromium + system dependencies
+# npx is on node user's PATH, so use ENV to make it available to root
+ENV PATH="/usr/local/lib/node_modules/.bin:/usr/local/bin:${PATH}"
 RUN npx playwright install --with-deps chromium
 
 USER node
