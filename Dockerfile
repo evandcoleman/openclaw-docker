@@ -12,8 +12,11 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Install Playwright Chromium + system dependencies
+# Install Playwright Chromium + system dependencies in a shared location
+ENV PLAYWRIGHT_BROWSERS_PATH=/usr/lib/playwright
 RUN npm install -g playwright && \
-    playwright install --with-deps chromium
+    playwright install --with-deps chromium && \
+    chmod -R o+rx /usr/lib/playwright
 
 USER node
+ENV PLAYWRIGHT_BROWSERS_PATH=/usr/lib/playwright
