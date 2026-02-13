@@ -2,15 +2,23 @@ FROM ghcr.io/openclaw/openclaw:latest
 
 USER root
 
-# Install GitHub CLI
+# Install GitHub CLI + image manipulation tools
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl gpg && \
+    apt-get install -y --no-install-recommends \
+      curl gpg \
+      imagemagick \
+      inkscape \
+      ffmpeg \
+      libvips-dev && \
     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list && \
     apt-get update && \
     apt-get install -y --no-install-recommends gh && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# Install Sharp globally for Node.js image processing
+RUN npm install -g sharp-cli
 
 # Install Playwright Chromium + system dependencies in a shared location
 ENV PLAYWRIGHT_BROWSERS_PATH=/usr/lib/playwright
